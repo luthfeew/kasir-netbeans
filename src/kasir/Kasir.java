@@ -99,6 +99,11 @@ public class Kasir extends javax.swing.JFrame {
         });
 
         btnEdit.setText("Edit");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
 
         btnHapus.setText("Hapus");
 
@@ -115,6 +120,11 @@ public class Kasir extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tabel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -123,7 +133,7 @@ public class Kasir extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnTambah)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -133,12 +143,12 @@ public class Kasir extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnReset))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(kode_barang, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -196,8 +206,31 @@ public class Kasir extends javax.swing.JFrame {
             tampilkan();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Ada yang belum diisi");
+            Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnTambahActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        try {
+            Connection cn = ConnectDb.getConnection();
+            cn.createStatement().executeUpdate("UPDATE barang SET nama_barang='"+nama_barang.getText()+"',harga_barang='"+harga_barang.getText()+"',satuan_barang='"+satuan_barang.getText()+"',keterangan_barang='"+keterangan_barang.getText()+"' WHERE kode_barang='"+kode_barang.getText()+"'");
+            tampilkan();
+        } catch (SQLException ex) {
+            Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void tabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelMouseClicked
+        int i = tabel.getSelectedRow();
+        
+        if(i>-1){
+            kode_barang.setText(model.getValueAt(i, 0).toString());
+            nama_barang.setText(model.getValueAt(i, 1).toString());
+            harga_barang.setText(model.getValueAt(i, 2).toString());
+            satuan_barang.setText(model.getValueAt(i, 3).toString());
+            keterangan_barang.setText(model.getValueAt(i, 4).toString());
+        }
+    }//GEN-LAST:event_tabelMouseClicked
 
     /**
      * @param args the command line arguments
