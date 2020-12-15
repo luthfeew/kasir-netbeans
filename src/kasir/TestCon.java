@@ -15,16 +15,10 @@ import java.sql.DriverManager;
 import java.sql.Statement;
 
 public class TestCon {
-    public static Connection con;
-    public static Statement stm;
-    
     public static void main(String args[]){
-        try {
-            con = DriverManager.getConnection("jdbc:mysql://localhost/test?serverTimezone=Asia/Jakarta","root","");
-            stm = con.createStatement();
-            System.out.println("Koneksi berhasil;");
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
+        Connection con = ConnectDb.getConnection();
+        if (con != null) {
+            System.out.println("Koneksi berhasil!");
         }
     }
 }

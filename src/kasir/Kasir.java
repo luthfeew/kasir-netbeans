@@ -191,7 +191,7 @@ public class Kasir extends javax.swing.JFrame {
 
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
         try {
-            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/kasir","root","12345679");
+            Connection cn = ConnectDb.getConnection();
             cn.createStatement().executeUpdate("INSERT INTO barang(kode_barang,nama_barang,harga_barang,satuan_barang,keterangan_barang) VALUES"+"('"+kode_barang.getText()+"','"+nama_barang.getText()+"','"+harga_barang.getText()+"','"+satuan_barang.getText()+"','"+keterangan_barang.getText()+"')");
             tampilkan();
         } catch (SQLException ex) {
@@ -262,7 +262,7 @@ public class Kasir extends javax.swing.JFrame {
             model.removeRow(0);
         }
         try {
-            Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/kasir","root","12345679");
+            Connection cn = ConnectDb.getConnection();
             ResultSet rs = cn.createStatement().executeQuery("SELECT * FROM barang");
             while(rs.next()) {
                 String data [] = {rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6)};
