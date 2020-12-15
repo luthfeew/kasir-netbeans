@@ -20,7 +20,7 @@ public class TestCon {
     
     public static void main(String args[]){
         try {
-            con = DriverManager.getConnection("jdbc:mysql://localhost/kasir","root","12345679");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/test?serverTimezone=Asia/Jakarta","root","");
             stm = con.createStatement();
             System.out.println("Koneksi berhasil;");
         } catch (Exception e) {
