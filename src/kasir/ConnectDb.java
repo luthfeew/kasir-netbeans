@@ -18,11 +18,8 @@ public class ConnectDb {
         if (con != null) return con;
         String db = "kasir";
         String user = "root";
-<<<<<<< HEAD
-        String pass = "Tembelek123";
-=======
-        String pass = "";
->>>>>>> ec093522c9e4a0d601d8b4ed6d45ab60f40e4e9e
+//        String pass = "Tembelek123";
+        String pass = "12345679";
         return getConnection(db, user, pass);
     }
     
