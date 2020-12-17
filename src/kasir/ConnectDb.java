@@ -11,7 +11,6 @@ package kasir;
  */
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.Statement;
 
 public class ConnectDb {        
     static Connection con=null;
@@ -19,7 +18,11 @@ public class ConnectDb {
         if (con != null) return con;
         String db = "kasir";
         String user = "root";
+<<<<<<< HEAD
         String pass = "Tembelek123";
+=======
+        String pass = "";
+>>>>>>> ec093522c9e4a0d601d8b4ed6d45ab60f40e4e9e
         return getConnection(db, user, pass);
     }
     
