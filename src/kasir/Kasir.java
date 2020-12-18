@@ -21,10 +21,11 @@ public class Kasir extends javax.swing.JFrame {
      * Creates new form Kasir
      */
     DefaultTableModel model;
+
     public Kasir() {
         initComponents();
-        String [] judul = {"ID","Kode Barang","Nama Barang","Harga Barang","Satuan Barang","Keterangan Barang"};
-        model = new DefaultTableModel(judul,0);
+        String[] judul = {"ID", "Kode Barang", "Nama Barang", "Harga Barang", "Satuan Barang", "Keterangan Barang"};
+        model = new DefaultTableModel(judul, 0);
         tabelBarang.setModel(model);
         tabelBarang.getColumnModel().getColumn(0).setPreferredWidth(1);
         tabelBarang.getColumnModel().getColumn(0).setMinWidth(0);
@@ -114,8 +115,18 @@ public class Kasir extends javax.swing.JFrame {
         });
 
         btnHapus.setText("Hapus");
+        btnHapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHapusActionPerformed(evt);
+            }
+        });
 
         btnReset.setText("Reset");
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetActionPerformed(evt);
+            }
+        });
 
         id_barang.setEditable(false);
         id_barang.setText("#hiddendonotedit");
@@ -229,10 +240,13 @@ public class Kasir extends javax.swing.JFrame {
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
         try {
             Connection cn = ConnectDb.getConnection();
-            cn.createStatement().executeUpdate("INSERT INTO barang(kode_barang,nama_barang,harga_barang,satuan_barang,keterangan_barang) VALUES"+"('"+kode_barang.getText()+"','"+nama_barang.getText()+"','"+harga_barang.getText()+"','"+satuan_barang.getText()+"','"+keterangan_barang.getText()+"')");
-            tampilkan();
+            if (kode_barang.getText() != null && !kode_barang.getText().isEmpty()) {
+                cn.createStatement().executeUpdate("INSERT INTO barang(kode_barang,nama_barang,harga_barang,satuan_barang,keterangan_barang) VALUES" + "('" + kode_barang.getText() + "','" + nama_barang.getText() + "','" + harga_barang.getText() + "','" + satuan_barang.getText() + "','" + keterangan_barang.getText() + "')");
+                tampilkan();
+                reset();
+            }
         } catch (SQLException ex) {
-//            JOptionPane.showMessageDialog(null, "Ada yang belum diisi");
+//            JOptionPane.showMessageDialog(null, ex);
             Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnTambahActionPerformed
@@ -240,8 +254,9 @@ public class Kasir extends javax.swing.JFrame {
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         try {
             Connection cn = ConnectDb.getConnection();
-            cn.createStatement().executeUpdate("UPDATE barang SET kode_barang='"+kode_barang.getText()+"',nama_barang='"+nama_barang.getText()+"',harga_barang='"+harga_barang.getText()+"',satuan_barang='"+satuan_barang.getText()+"',keterangan_barang='"+keterangan_barang.getText()+"' WHERE id='"+id_barang.getText()+"'");
+            cn.createStatement().executeUpdate("UPDATE barang SET kode_barang='" + kode_barang.getText() + "',nama_barang='" + nama_barang.getText() + "',harga_barang='" + harga_barang.getText() + "',satuan_barang='" + satuan_barang.getText() + "',keterangan_barang='" + keterangan_barang.getText() + "' WHERE id='" + id_barang.getText() + "'");
             tampilkan();
+            reset();
         } catch (SQLException ex) {
             Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -249,8 +264,8 @@ public class Kasir extends javax.swing.JFrame {
 
     private void tabelBarangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelBarangMouseClicked
         int i = tabelBarang.getSelectedRow();
-        
-        if(i>-1){
+
+        if (i > -1) {
             id_barang.setText(model.getValueAt(i, 0).toString());
             kode_barang.setText(model.getValueAt(i, 1).toString());
             nama_barang.setText(model.getValueAt(i, 2).toString());
@@ -259,6 +274,30 @@ public class Kasir extends javax.swing.JFrame {
             keterangan_barang.setText(model.getValueAt(i, 5).toString());
         }
     }//GEN-LAST:event_tabelBarangMouseClicked
+
+    private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
+        try {
+            Connection cn = ConnectDb.getConnection();
+            cn.createStatement().executeUpdate("DELETE FROM barang WHERE id='" + id_barang.getText() + "'");
+            tampilkan();
+            reset();
+        } catch (SQLException ex) {
+            Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        reset();
+    }//GEN-LAST:event_btnResetActionPerformed
+
+    private void reset() {
+        id_barang.setText(null);
+        kode_barang.setText(null);
+        nama_barang.setText(null);
+        harga_barang.setText(null);
+        satuan_barang.setText(null);
+        keterangan_barang.setText(null);
+    }
 
     /**
      * @param args the command line arguments
@@ -322,14 +361,14 @@ public class Kasir extends javax.swing.JFrame {
 
     private void tampilkan() {
         int row = tabelBarang.getRowCount();
-        for(int a = 0; a < row; a++) {
+        for (int a = 0; a < row; a++) {
             model.removeRow(0);
         }
         try {
             Connection cn = ConnectDb.getConnection();
             ResultSet rs = cn.createStatement().executeQuery("SELECT * FROM barang");
-            while(rs.next()) {
-                String data [] = {rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6)};
+            while (rs.next()) {
+                String data[] = {rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6)};
                 model.addRow(data);
             }
         } catch (SQLException ex) {
