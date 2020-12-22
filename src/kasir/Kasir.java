@@ -17,9 +17,6 @@ import javax.swing.table.DefaultTableModel;
 
 public class Kasir extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Kasir
-     */
     DefaultTableModel model;
 
     public Kasir() {
@@ -27,7 +24,7 @@ public class Kasir extends javax.swing.JFrame {
         String[] judul = {"ID", "Kode", "Nama", "Harga", "Satuan", "Keterangan"};
         model = new DefaultTableModel(judul, 0);
         tabelBarang.setModel(model);
-        //AWAL MASIH BUG
+        //AWAL MASIH EXPERIMENTAL
         tabelBarang.getColumnModel().getColumn(0).setPreferredWidth(0);
         tabelBarang.getColumnModel().getColumn(1).setPreferredWidth(50);
         tabelBarang.getColumnModel().getColumn(2).setPreferredWidth(0);
@@ -38,9 +35,10 @@ public class Kasir extends javax.swing.JFrame {
         tabelBarang.getColumnModel().getColumn(0).setMaxWidth(0);
         tabelBarang.getColumnModel().getColumn(1).setMinWidth(10);
         tabelBarang.getColumnModel().getColumn(1).setMaxWidth(50);
-        //AKHIR MASIH BUG
+        //AKHIR EXPERIMENTAL
         tabelBarang.setDefaultEditor(Object.class, null);
         id_barang.setVisible(false);
+        fillCombo();
         tampilkan();
     }
 
@@ -75,15 +73,14 @@ public class Kasir extends javax.swing.JFrame {
         id_barang = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        jumlahBarang = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        hargaBarang = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        totalBarang = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        satuanBarang = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -95,6 +92,9 @@ public class Kasir extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         jTextField8 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
+        comboBarang = new javax.swing.JComboBox<>();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel14 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -275,6 +275,12 @@ public class Kasir extends javax.swing.JFrame {
 
         jButton3.setText("Simpan Log");
 
+        comboBarang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBarangActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -282,7 +288,7 @@ public class Kasir extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 107, Short.MAX_VALUE)
@@ -291,19 +297,23 @@ public class Kasir extends javax.swing.JFrame {
                             .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(8, 8, 8)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(satuanBarang, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(totalBarang, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(hargaBarang, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jumlahBarang, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(60, 60, 60)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(jButton2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 211, Short.MAX_VALUE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(comboBarang, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGap(264, 264, 264)
+                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(35, 35, 35)
@@ -326,25 +336,25 @@ public class Kasir extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(comboBarang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jumlahBarang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(hargaBarang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(totalBarang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
+                    .addComponent(satuanBarang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton1))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -364,6 +374,27 @@ public class Kasir extends javax.swing.JFrame {
         );
 
         jTabbedPane1.addTab("Kasir", jPanel2);
+
+        jLabel14.setText("Masih kosong euy");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(178, 178, 178)
+                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(321, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(130, 130, 130)
+                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(247, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Log", jPanel3);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -387,9 +418,8 @@ public class Kasir extends javax.swing.JFrame {
                 tampilkan();
                 reset();
             }
-        } catch (SQLException ex) {
-//            JOptionPane.showMessageDialog(null, ex);
-            Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_btnTambahActionPerformed
 
@@ -399,14 +429,13 @@ public class Kasir extends javax.swing.JFrame {
             cn.createStatement().executeUpdate("UPDATE barang SET kode_barang='" + kode_barang.getText() + "',nama_barang='" + nama_barang.getText() + "',harga_barang='" + harga_barang.getText() + "',satuan_barang='" + satuan_barang.getText() + "',keterangan_barang='" + keterangan_barang.getText() + "' WHERE id='" + id_barang.getText() + "'");
             tampilkan();
             reset();
-        } catch (SQLException ex) {
-            Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void tabelBarangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelBarangMouseClicked
         int i = tabelBarang.getSelectedRow();
-
         if (i > -1) {
             id_barang.setText(model.getValueAt(i, 0).toString());
             kode_barang.setText(model.getValueAt(i, 1).toString());
@@ -423,8 +452,8 @@ public class Kasir extends javax.swing.JFrame {
             cn.createStatement().executeUpdate("DELETE FROM barang WHERE id='" + id_barang.getText() + "'");
             tampilkan();
             reset();
-        } catch (SQLException ex) {
-            Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
         }
     }//GEN-LAST:event_btnHapusActionPerformed
 
@@ -432,14 +461,14 @@ public class Kasir extends javax.swing.JFrame {
         reset();
     }//GEN-LAST:event_btnResetActionPerformed
 
-    private void reset() {
-        id_barang.setText(null);
-        kode_barang.setText(null);
-        nama_barang.setText(null);
-        harga_barang.setText(null);
-        satuan_barang.setText(null);
-        keterangan_barang.setText(null);
-    }
+    private void comboBarangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBarangActionPerformed
+        hargaBarang.setEditable(false);
+//        hargaBarang.setEnabled(false);
+        totalBarang.setEditable(false);
+//        totalBarang.setEnabled(false);
+        satuanBarang.setEditable(false);
+//        satuanBarang.setEnabled(false);
+    }//GEN-LAST:event_comboBarangActionPerformed
 
     /**
      * @param args the command line arguments
@@ -470,10 +499,8 @@ public class Kasir extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Kasir().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new Kasir().setVisible(true);
         });
     }
 
@@ -482,6 +509,8 @@ public class Kasir extends javax.swing.JFrame {
     private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnTambah;
+    private javax.swing.JComboBox<String> comboBarang;
+    private javax.swing.JTextField hargaBarang;
     private javax.swing.JTextField harga_barang;
     private javax.swing.JTextField id_barang;
     private javax.swing.JButton jButton1;
@@ -492,6 +521,7 @@ public class Kasir extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -502,26 +532,26 @@ public class Kasir extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
+    private javax.swing.JTextField jumlahBarang;
     private javax.swing.JTextArea keterangan_barang;
     private javax.swing.JTextField kode_barang;
     private javax.swing.JTextField nama_barang;
+    private javax.swing.JTextField satuanBarang;
     private javax.swing.JTextField satuan_barang;
     private javax.swing.JTable tabelBarang;
+    private javax.swing.JTextField totalBarang;
     // End of variables declaration//GEN-END:variables
 
+    // CUSTOM METHOD BISA DIEEDIT
     private void tampilkan() {
         int row = tabelBarang.getRowCount();
         for (int a = 0; a < row; a++) {
@@ -536,6 +566,28 @@ public class Kasir extends javax.swing.JFrame {
             }
         } catch (SQLException ex) {
             Logger.getLogger(Kasir.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void reset() {
+        id_barang.setText(null);
+        kode_barang.setText(null);
+        nama_barang.setText(null);
+        harga_barang.setText(null);
+        satuan_barang.setText(null);
+        keterangan_barang.setText(null);
+    }
+
+    private void fillCombo() {
+        try {
+            Connection cn = ConnectDb.getConnection();
+            ResultSet rs = cn.createStatement().executeQuery("SELECT CONCAT(kode_barang, \" | \", nama_barang) FROM barang;");
+            while (rs.next()) {
+                String barang = rs.getString(1);
+                comboBarang.addItem(barang);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e);
         }
     }
 }
