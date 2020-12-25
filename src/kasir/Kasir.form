@@ -290,7 +290,7 @@
                                                   <Component id="jumlahBarang" alignment="0" min="-2" pref="115" max="-2" attributes="0"/>
                                               </Group>
                                               <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
-                                              <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                                              <Component id="tambahTransaksi" min="-2" max="-2" attributes="0"/>
                                               <EmptySpace pref="211" max="32767" attributes="0"/>
                                           </Group>
                                           <Group type="102" attributes="0">
@@ -303,7 +303,7 @@
                                                           <Group type="102" attributes="0">
                                                               <Component id="totalBarang" min="-2" pref="115" max="-2" attributes="0"/>
                                                               <EmptySpace min="-2" pref="147" max="-2" attributes="0"/>
-                                                              <Component id="jButton1" min="-2" pref="71" max="-2" attributes="0"/>
+                                                              <Component id="hapusTransaksi" min="-2" pref="71" max="-2" attributes="0"/>
                                                           </Group>
                                                       </Group>
                                                   </Group>
@@ -328,7 +328,7 @@
                                   <Component id="jTextField8" alignment="0" pref="117" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                              <Component id="jButton3" min="-2" pref="102" max="-2" attributes="0"/>
+                              <Component id="simpanTransaksi" min="-2" pref="102" max="-2" attributes="0"/>
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
@@ -361,8 +361,8 @@
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="tambahTransaksi" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="hapusTransaksi" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="totalBarang" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -377,7 +377,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jTextField7" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jButton3" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
+                          <Component id="simpanTransaksi" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -426,15 +426,18 @@
             </Component>
             <Component class="javax.swing.JTextField" name="satuanBarang">
             </Component>
-            <Component class="javax.swing.JButton" name="jButton1">
+            <Component class="javax.swing.JButton" name="hapusTransaksi">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Hapus"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton2">
+            <Component class="javax.swing.JButton" name="tambahTransaksi">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Tambah"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tambahTransaksiActionPerformed"/>
+              </Events>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane3">
               <AuxValues>
@@ -478,7 +481,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="jTextField8">
             </Component>
-            <Component class="javax.swing.JButton" name="jButton3">
+            <Component class="javax.swing.JButton" name="simpanTransaksi">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Simpan Log"/>
               </Properties>

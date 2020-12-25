@@ -81,8 +81,8 @@ public class Kasir extends javax.swing.JFrame {
         totalBarang = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         satuanBarang = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        hapusTransaksi = new javax.swing.JButton();
+        tambahTransaksi = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel11 = new javax.swing.JLabel();
@@ -91,7 +91,7 @@ public class Kasir extends javax.swing.JFrame {
         jTextField7 = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         jTextField8 = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        simpanTransaksi = new javax.swing.JButton();
         comboBarang = new javax.swing.JComboBox<>();
         jPanel3 = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
@@ -256,9 +256,14 @@ public class Kasir extends javax.swing.JFrame {
 
         jLabel10.setText("Satuan");
 
-        jButton1.setText("Hapus");
+        hapusTransaksi.setText("Hapus");
 
-        jButton2.setText("Tambah");
+        tambahTransaksi.setText("Tambah");
+        tambahTransaksi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tambahTransaksiActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -279,7 +284,7 @@ public class Kasir extends javax.swing.JFrame {
 
         jLabel13.setText("Kembalian");
 
-        jButton3.setText("Simpan Log");
+        simpanTransaksi.setText("Simpan Log");
 
         comboBarang.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -317,7 +322,7 @@ public class Kasir extends javax.swing.JFrame {
                                             .addComponent(hargaBarang, javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jumlahBarang, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(60, 60, 60)
-                                        .addComponent(jButton2)
+                                        .addComponent(tambahTransaksi)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 211, Short.MAX_VALUE))
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -329,7 +334,7 @@ public class Kasir extends javax.swing.JFrame {
                                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                                         .addComponent(totalBarang, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addGap(147, 147, 147)
-                                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                                        .addComponent(hapusTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                                         .addGap(0, 0, Short.MAX_VALUE))))))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(35, 35, 35)
@@ -343,7 +348,7 @@ public class Kasir extends javax.swing.JFrame {
                             .addComponent(jTextField7)
                             .addComponent(jTextField8, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
                         .addGap(30, 30, 30)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(simpanTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -368,8 +373,8 @@ public class Kasir extends javax.swing.JFrame {
                     .addComponent(satuanBarang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton1)
+                    .addComponent(tambahTransaksi)
+                    .addComponent(hapusTransaksi)
                     .addComponent(jLabel9)
                     .addComponent(totalBarang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
@@ -382,7 +387,7 @@ public class Kasir extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
                     .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(simpanTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
@@ -512,6 +517,17 @@ public class Kasir extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jumlahBarangKeyReleased
 
+    private void tambahTransaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tambahTransaksiActionPerformed
+        try {
+            String pil = (String) comboBarang.getSelectedItem();
+            String mantap = pil.substring(0, pil.indexOf(" |"));
+            Connection cn = ConnectDb.getConnection();
+            cn.createStatement().executeUpdate("INSERT INTO transaksi(kode_transaksi,kode_barang,jumlah_barang,harga_barang,total) VALUES" + "('0001','" + mantap + "','" + jumlahBarang.getText() + "','" + hargaBarang.getText() + "','" + totalBarang.getText() + "')");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }//GEN-LAST:event_tambahTransaksiActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -556,12 +572,10 @@ public class Kasir extends javax.swing.JFrame {
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnTambah;
     private javax.swing.JComboBox<String> comboBarang;
+    private javax.swing.JButton hapusTransaksi;
     private javax.swing.JTextField hargaBarang;
     private javax.swing.JTextField harga_barang;
     private javax.swing.JTextField id_barang;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -593,7 +607,9 @@ public class Kasir extends javax.swing.JFrame {
     private javax.swing.JTextField nama_barang;
     private javax.swing.JTextField satuanBarang;
     private javax.swing.JTextField satuan_barang;
+    private javax.swing.JButton simpanTransaksi;
     private javax.swing.JTable tabelBarang;
+    private javax.swing.JButton tambahTransaksi;
     private javax.swing.JTextField totalBarang;
     // End of variables declaration//GEN-END:variables
 
