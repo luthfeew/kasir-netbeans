@@ -401,6 +401,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="jumlahBarang">
+              <Events>
+                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jumlahBarangKeyReleased"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel8">
               <Properties>

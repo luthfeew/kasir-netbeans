@@ -244,6 +244,12 @@ public class Kasir extends javax.swing.JFrame {
 
         jLabel7.setText("Jumlah");
 
+        jumlahBarang.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jumlahBarangKeyReleased(evt);
+            }
+        });
+
         jLabel8.setText("Harga");
 
         jLabel9.setText("Total");
@@ -496,6 +502,16 @@ public class Kasir extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_comboBarangItemStateChanged
 
+    private void jumlahBarangKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jumlahBarangKeyReleased
+        if (jumlahBarang.getText() != null && !jumlahBarang.getText().isEmpty()) {
+            int a = Integer.parseInt(hargaBarang.getText());
+            int b = Integer.parseInt(jumlahBarang.getText());
+            int c = a * b;
+            String jumlah = String.valueOf(c);
+            totalBarang.setText(jumlah);
+        }
+    }//GEN-LAST:event_jumlahBarangKeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -613,7 +629,6 @@ public class Kasir extends javax.swing.JFrame {
             Connection cn = ConnectDb.getConnection();
             ResultSet rs = cn.createStatement().executeQuery("SELECT CONCAT(kode_barang, \" | \", nama_barang) FROM barang");
             while (rs.next()) {
-                String barang = rs.getString(1);
                 comboBarang.addItem(rs.getString(1));
             }
         } catch (SQLException ex) {
