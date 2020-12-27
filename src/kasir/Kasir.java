@@ -550,7 +550,10 @@ public class Kasir extends javax.swing.JFrame {
                 counter = Integer.parseInt(kodeTr.getString(1));
             }
             cn.createStatement().executeUpdate("INSERT INTO transaksi(kode_transaksi,kode_barang,jumlah_barang,harga_barang,total) VALUES('" + counter + "','" + mantap + "','" + jumlahBarang.getText() + "','" + hargaBarang.getText() + "','" + totalBarang.getText() + "')");
-            cn.createStatement().executeUpdate("INSERT INTO counter(count) VALUES('" + counter + "')");
+            ResultSet cekCounter = cn.createStatement().executeQuery("SELECT count FROM counter WHERE count='" + counter + "' LIMIT 1");
+            if (!cekCounter.next()) {
+                cn.createStatement().executeUpdate("INSERT INTO counter(count) VALUES('" + counter + "')");
+            }
             tampilkan2();
             totalBelanja();
         } catch (SQLException ex) {
