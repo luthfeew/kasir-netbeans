@@ -706,9 +706,10 @@ public class Kasir extends javax.swing.JFrame {
             ResultSet kodeTr = cn.createStatement().executeQuery("SELECT count FROM counter ORDER BY id DESC LIMIT 1");
             if (kodeTr.next()) {
                 int counter = Integer.parseInt(kodeTr.getString(1));
-                ResultSet rs = cn.createStatement().executeQuery("SELECT * FROM transaksi WHERE kode_transaksi='" + counter + "'");
+                //workaround
+                ResultSet rs = cn.createStatement().executeQuery("SELECT ROW_NUMBER() OVER ( ORDER BY transaksi.id ) row_num, transaksi.kode_transaksi, transaksi.kode_barang, barang.nama_barang, transaksi.jumlah_barang, transaksi.harga_barang, barang.satuan_barang, transaksi.total FROM transaksi LEFT JOIN barang ON transaksi.kode_barang = barang.kode_barang  WHERE kode_transaksi='" + counter + "'");
                 while (rs.next()) {
-                    String data[] = {rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)};
+                    String data[] = {rs.getString(1), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8)};
                     model2.addRow(data);
                 }
             }
