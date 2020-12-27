@@ -29,16 +29,15 @@ public class Kasir extends javax.swing.JFrame {
         model2 = new DefaultTableModel(judul2, 0);
         tabelKasir.setModel(model2);
         //AWAL MASIH EXPERIMENTAL
-        tabelBarang.getColumnModel().getColumn(0).setPreferredWidth(0);
         tabelBarang.getColumnModel().getColumn(0).setMinWidth(0);
         tabelBarang.getColumnModel().getColumn(0).setMaxWidth(0);
-        tabelKasir.getColumnModel().getColumn(1).setPreferredWidth(0);
         tabelKasir.getColumnModel().getColumn(1).setMinWidth(0);
         tabelKasir.getColumnModel().getColumn(1).setMaxWidth(0);
         //AKHIR EXPERIMENTAL
         tabelBarang.setDefaultEditor(Object.class, null);
         tabelKasir.setDefaultEditor(Object.class, null);
         id_barang.setVisible(false);
+        id_transaksi.setVisible(false);
         fillCombo();
         tampilkan();
         tampilkan2();
@@ -294,10 +293,17 @@ public class Kasir extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tabelKasir.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelKasirMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tabelKasir);
 
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel11.setText("Total");
+
+        totalBelanja.setEditable(false);
 
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel12.setText("Bayar");
@@ -310,6 +316,8 @@ public class Kasir extends javax.swing.JFrame {
 
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel13.setText("Kembalian");
+
+        kembalian.setEditable(false);
 
         simpanTransaksi.setText("Simpan Log");
         simpanTransaksi.addActionListener(new java.awt.event.ActionListener() {
@@ -515,11 +523,8 @@ public class Kasir extends javax.swing.JFrame {
 
     private void comboBarangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBarangActionPerformed
         hargaBarang.setEditable(false);
-//        hargaBarang.setEnabled(false);
         totalBarang.setEditable(false);
-//        totalBarang.setEnabled(false);
         satuanBarang.setEditable(false);
-//        satuanBarang.setEnabled(false);
     }//GEN-LAST:event_comboBarangActionPerformed
 
     private void comboBarangItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboBarangItemStateChanged
@@ -561,6 +566,8 @@ public class Kasir extends javax.swing.JFrame {
             }
             if (jumlahBarang.getText() != null && !jumlahBarang.getText().isEmpty()) {
                 cn.createStatement().executeUpdate("INSERT INTO transaksi(kode_transaksi,kode_barang,jumlah_barang,harga_barang,total) VALUES('" + counter + "','" + mantap + "','" + jumlahBarang.getText() + "','" + hargaBarang.getText() + "','" + totalBarang.getText() + "')");
+                jumlahBarang.setText("");
+                totalBarang.setText("");
                 ResultSet cekCounter = cn.createStatement().executeQuery("SELECT count FROM counter WHERE count='" + counter + "' LIMIT 1");
                 if (!cekCounter.next()) {
                     cn.createStatement().executeUpdate("INSERT INTO counter(count) VALUES('" + counter + "')");
@@ -605,8 +612,23 @@ public class Kasir extends javax.swing.JFrame {
     }//GEN-LAST:event_bayarKeyReleased
 
     private void hapusTransaksiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hapusTransaksiActionPerformed
-        // TODO add your handling code here:
+        try {
+            Connection cn = ConnectDb.getConnection();
+            cn.createStatement().executeUpdate("DELETE FROM transaksi WHERE id='" + id_transaksi.getText() + "'");
+            tampilkan2();
+            totalBelanja();
+            bayar.setText("");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
     }//GEN-LAST:event_hapusTransaksiActionPerformed
+
+    private void tabelKasirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelKasirMouseClicked
+        int i = tabelKasir.getSelectedRow();
+        if (i > -1) {
+            id_transaksi.setText(model2.getValueAt(i, 1).toString());
+        }
+    }//GEN-LAST:event_tabelKasirMouseClicked
 
     /**
      * @param args the command line arguments
@@ -762,9 +784,11 @@ public class Kasir extends javax.swing.JFrame {
             if (kodeTr.next()) {
                 int counter = Integer.parseInt(kodeTr.getString(1));
                 ResultSet rs = cn.createStatement().executeQuery("SELECT SUM(total) FROM transaksi WHERE kode_transaksi='" + counter + "'");
-                while (rs.next()) {
-                    String s = !rs.getString(1).contains(".") ? rs.getString(1) : rs.getString(1).replaceAll("0*$", "").replaceAll("\\.$", "");
-                    totalBelanja.setText(s);
+                if (rs.next()) {
+                    totalBelanja.setText(rs.getString(1));
+                    if (rs.wasNull()) {
+                        totalBelanja.setText("");
+                    }
                 }
             }
         } catch (SQLException ex) {

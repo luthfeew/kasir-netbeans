@@ -462,6 +462,9 @@
                       </Table>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tabelKasirMouseClicked"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
@@ -472,6 +475,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="totalBelanja">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel12">
               <Properties>
@@ -491,6 +497,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="kembalian">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+              </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="simpanTransaksi">
               <Properties>
