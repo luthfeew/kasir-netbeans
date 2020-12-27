@@ -313,7 +313,10 @@
                                                   </Group>
                                               </Group>
                                               <EmptySpace max="32767" attributes="0"/>
-                                              <Component id="tambahTransaksi" min="-2" max="-2" attributes="0"/>
+                                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                                  <Component id="tambahTransaksi" max="32767" attributes="0"/>
+                                                  <Component id="id_transaksi" max="32767" attributes="0"/>
+                                              </Group>
                                           </Group>
                                           <Component id="satuanBarang" min="-2" pref="119" max="-2" attributes="0"/>
                                           <Component id="comboBarang" alignment="0" min="-2" pref="250" max="-2" attributes="0"/>
@@ -341,6 +344,7 @@
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jumlahBarang" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="id_transaksi" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -428,6 +432,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Hapus"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="hapusTransaksiActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="tambahTransaksi">
               <Properties>
@@ -501,6 +508,12 @@
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
+            </Component>
+            <Component class="javax.swing.JTextField" name="id_transaksi">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="text" type="java.lang.String" value="#hiddendonotedit"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>
