@@ -16,19 +16,11 @@ public class ConnectDb {
         if (con != null) {
             return con;
         }
-        String db = "";
-        String user = "";
-        String pass = "";
-        return getConnection(db, user, pass);
-    }
-
-    private static Connection getConnection(String db_name, String user_name, String password) {
         try {
-            con = DriverManager.getConnection("jdbc:sqlite:D:/OneDrive - universitas amikom purwokerto/Pemrograman Berorientasi Objek/PROJEKAKHIR/kasir-netbeans/master.db");
+            con = DriverManager.getConnection("jdbc:sqlite:master.db");
         } catch (Exception e) {
             e.printStackTrace();
         }
         return con;
     }
-
 }
