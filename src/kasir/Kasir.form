@@ -173,10 +173,17 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="kode_barang">
+              <Events>
+                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="kode_barangKeyReleased"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="kode_barangKeyTyped"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="nama_barang">
             </Component>
             <Component class="javax.swing.JTextField" name="harga_barang">
+              <Events>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="harga_barangKeyTyped"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="satuan_barang">
             </Component>
@@ -402,6 +409,7 @@
             <Component class="javax.swing.JTextField" name="jumlahBarang">
               <Events>
                 <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jumlahBarangKeyReleased"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jumlahBarangKeyTyped"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel8">
@@ -411,6 +419,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="hargaBarang">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel9">
               <Properties>
@@ -419,6 +430,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="totalBarang">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel10">
               <Properties>
@@ -427,6 +441,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="satuanBarang">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+              </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="hapusTransaksi">
               <Properties>
@@ -488,6 +505,7 @@
             <Component class="javax.swing.JTextField" name="bayar">
               <Events>
                 <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="bayarKeyReleased"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="bayarKeyTyped"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel13">
