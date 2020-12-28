@@ -17,21 +17,25 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class Kasir extends javax.swing.JFrame {
-    
+
     DefaultTableModel model;
     DefaultTableModel model2;
-    
+
     public Kasir() {
         initComponents();
-        String[] judul = {"ID", "Kode", "Nama", "Harga", "Satuan", "Keterangan"};
+        String[] judul = {"#", "ID", "Kode", "Nama", "Harga", "Satuan", "Keterangan"};
         String[] judul2 = {"#", "ID", "Kode", "Nama", "Jumlah", "Harga", "Satuan", "Total"};
         model = new DefaultTableModel(judul, 0);
         tabelBarang.setModel(model);
         model2 = new DefaultTableModel(judul2, 0);
         tabelKasir.setModel(model2);
         //AWAL MASIH EXPERIMENTAL
-        tabelBarang.getColumnModel().getColumn(0).setMinWidth(0);
-        tabelBarang.getColumnModel().getColumn(0).setMaxWidth(0);
+        tabelBarang.getColumnModel().getColumn(0).setPreferredWidth(25);
+        tabelBarang.getColumnModel().getColumn(0).setMaxWidth(1000);
+        tabelKasir.getColumnModel().getColumn(0).setPreferredWidth(25);
+        tabelKasir.getColumnModel().getColumn(0).setMaxWidth(1000);
+        tabelBarang.getColumnModel().getColumn(1).setMinWidth(0);
+        tabelBarang.getColumnModel().getColumn(1).setMaxWidth(0);
         tabelKasir.getColumnModel().getColumn(1).setMinWidth(0);
         tabelKasir.getColumnModel().getColumn(1).setMaxWidth(0);
         //AKHIR EXPERIMENTAL
@@ -508,6 +512,7 @@ public class Kasir extends javax.swing.JFrame {
                     cn.createStatement().executeUpdate("INSERT INTO barang(kode_barang,nama_barang,harga_barang,satuan_barang,keterangan_barang) VALUES" + "('" + kode_barang.getText() + "','" + nama_barang.getText() + "','" + harga_barang.getText() + "','" + satuan_barang.getText() + "','" + keterangan_barang.getText() + "')");
                     tampilkan();
                     reset();
+                    fillCombo();
                 } else {
                     JOptionPane.showMessageDialog(null, "Error! Kode Barang sudah digunakan");
                 }
@@ -523,6 +528,7 @@ public class Kasir extends javax.swing.JFrame {
             cn.createStatement().executeUpdate("UPDATE barang SET kode_barang='" + kode_barang.getText() + "',nama_barang='" + nama_barang.getText() + "',harga_barang='" + harga_barang.getText() + "',satuan_barang='" + satuan_barang.getText() + "',keterangan_barang='" + keterangan_barang.getText() + "' WHERE id='" + id_barang.getText() + "'");
             tampilkan();
             reset();
+            fillCombo();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
@@ -531,12 +537,12 @@ public class Kasir extends javax.swing.JFrame {
     private void tabelBarangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelBarangMouseClicked
         int i = tabelBarang.getSelectedRow();
         if (i > -1) {
-            id_barang.setText(model.getValueAt(i, 0).toString());
-            kode_barang.setText(model.getValueAt(i, 1).toString());
-            nama_barang.setText(model.getValueAt(i, 2).toString());
-            harga_barang.setText(model.getValueAt(i, 3).toString());
-            satuan_barang.setText(model.getValueAt(i, 4).toString());
-            keterangan_barang.setText(model.getValueAt(i, 5).toString());
+            id_barang.setText(model.getValueAt(i, 1).toString());
+            kode_barang.setText(model.getValueAt(i, 2).toString());
+            nama_barang.setText(model.getValueAt(i, 3).toString());
+            harga_barang.setText(model.getValueAt(i, 4).toString());
+            satuan_barang.setText(model.getValueAt(i, 5).toString());
+            keterangan_barang.setText(model.getValueAt(i, 6).toString());
         }
     }//GEN-LAST:event_tabelBarangMouseClicked
 
@@ -546,6 +552,7 @@ public class Kasir extends javax.swing.JFrame {
             cn.createStatement().executeUpdate("DELETE FROM barang WHERE id='" + id_barang.getText() + "'");
             tampilkan();
             reset();
+            fillCombo();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
@@ -560,13 +567,13 @@ public class Kasir extends javax.swing.JFrame {
             Connection cn = ConnectDb.getConnection();
             String pil = (String) comboBarang.getSelectedItem();
             if (pil != null) {
-                String mantap = pil.substring(0, pil.indexOf(" |"));
-                ResultSet rs = cn.createStatement().executeQuery("SELECT harga_barang, satuan_barang FROM barang WHERE kode_barang='" + mantap + "'");
+                String kodeBarang = pil.substring(0, pil.indexOf(" |"));
+                ResultSet rs = cn.createStatement().executeQuery("SELECT harga_barang, satuan_barang FROM barang WHERE kode_barang='" + kodeBarang + "'");
                 while (rs.next()) {
                     hargaBarang.setText(rs.getString(1));
                     satuanBarang.setText(rs.getString(2));
-                    jumlahBarang.setText("");
-                    totalBarang.setText("");
+                    jumlahBarang.setText(null);
+                    totalBarang.setText(null);
                 }
             }
         } catch (SQLException ex) {
@@ -588,24 +595,32 @@ public class Kasir extends javax.swing.JFrame {
         try {
             String pil = (String) comboBarang.getSelectedItem();
             if (pil != null) {
-                String mantap = pil.substring(0, pil.indexOf(" |"));
+                String kodeBarang = pil.substring(0, pil.indexOf(" |"));
                 Connection cn = ConnectDb.getConnection();
                 int counter = 1;
                 ResultSet kodeTr = cn.createStatement().executeQuery("SELECT count FROM counter ORDER BY id DESC LIMIT 1");
                 while (kodeTr.next()) {
                     counter = Integer.parseInt(kodeTr.getString(1));
                 }
-                if (jumlahBarang.getText() != null && !jumlahBarang.getText().isEmpty()) {
-                    cn.createStatement().executeUpdate("INSERT INTO transaksi(kode_transaksi,kode_barang,jumlah_barang,harga_barang,total) VALUES('" + counter + "','" + mantap + "','" + jumlahBarang.getText() + "','" + hargaBarang.getText() + "','" + totalBarang.getText() + "')");
-                    reset2();
-                    jumlahBarang.setEditable(false);
-                    ResultSet cekCounter = cn.createStatement().executeQuery("SELECT count FROM counter WHERE count='" + counter + "' LIMIT 1");
-                    if (!cekCounter.next()) {
-                        cn.createStatement().executeUpdate("INSERT INTO counter(count) VALUES('" + counter + "')");
+                ResultSet detailBarang = cn.createStatement().executeQuery("SELECT kode_barang, nama_barang, satuan_barang FROM barang WHERE kode_barang='" + kodeBarang + "'");
+                if (detailBarang.next()) {
+                    String a = detailBarang.getString(1);
+                    String b = detailBarang.getString(2);
+                    String c = detailBarang.getString(3);
+                    if (jumlahBarang.getText() != null && !jumlahBarang.getText().isEmpty()) {
+                        cn.createStatement().executeUpdate("INSERT INTO transaksi(kode_transaksi,kode_barang,nama_barang,satuan_barang,jumlah_barang,harga_barang,total) VALUES('" + counter + "','" + a + "','" + b + "','" + c + "','" + jumlahBarang.getText() + "','" + hargaBarang.getText() + "','" + totalBarang.getText() + "')");
+                        reset2();
+                        jumlahBarang.setEditable(false);
+                        ResultSet cekCounter = cn.createStatement().executeQuery("SELECT count FROM counter WHERE count='" + counter + "' LIMIT 1");
+                        if (!cekCounter.next()) {
+                            cn.createStatement().executeUpdate("INSERT INTO counter(count) VALUES('" + counter + "')");
+                        }
                     }
+                    tampilkan2();
+                    totalBelanja();
+                    bayar.setText(null);
+                    kembalian.setText(null);
                 }
-                tampilkan2();
-                totalBelanja();
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
@@ -616,21 +631,25 @@ public class Kasir extends javax.swing.JFrame {
         try {
             Connection cn = ConnectDb.getConnection();
             int counter = 1;
-            if (bayar.getText() != null && !bayar.getText().isEmpty()) {
-                ResultSet kodeTr = cn.createStatement().executeQuery("SELECT count FROM counter ORDER BY id DESC LIMIT 1");
-                while (kodeTr.next()) {
-                    counter = Integer.parseInt(kodeTr.getString(1));
-                    ResultSet cekKodeTr = cn.createStatement().executeQuery("SELECT kode_transaksi FROM transaksi WHERE kode_transaksi='" + counter + "' ORDER BY kode_transaksi DESC LIMIT 1");
-                    while (cekKodeTr.next()) {
-                        counter = counter + 1;
+            if (totalBelanja.getText() != null && !totalBelanja.getText().isEmpty()) {
+                if (bayar.getText() != null && !bayar.getText().isEmpty()) {
+                    ResultSet kodeTr = cn.createStatement().executeQuery("SELECT count FROM counter ORDER BY id DESC LIMIT 1");
+                    while (kodeTr.next()) {
+                        counter = Integer.parseInt(kodeTr.getString(1));
+                        ResultSet cekKodeTr = cn.createStatement().executeQuery("SELECT kode_transaksi FROM transaksi WHERE kode_transaksi='" + counter + "' ORDER BY kode_transaksi DESC LIMIT 1");
+                        while (cekKodeTr.next()) {
+                            counter = counter + 1;
+                        }
                     }
+                    cn.createStatement().executeUpdate("INSERT INTO counter(count) VALUES('" + counter + "')");
+                    tampilkan2();
+                    reset3();
+                    JOptionPane.showMessageDialog(null, "Transaksi berhasil disimpan");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Masukkan jumlah bayar terlebih dahulu");
                 }
-                cn.createStatement().executeUpdate("INSERT INTO counter(count) VALUES('" + counter + "')");
-                tampilkan2();
-                reset3();
-                JOptionPane.showMessageDialog(null, "Transaksi berhasil disimpan");
             } else {
-                JOptionPane.showMessageDialog(null, "Masukkan jumlah bayar terlebih dahulu");
+                JOptionPane.showMessageDialog(null, "Tambahkan item terlebih dahulu");
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
@@ -638,7 +657,7 @@ public class Kasir extends javax.swing.JFrame {
     }//GEN-LAST:event_simpanTransaksiActionPerformed
 
     private void bayarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_bayarKeyReleased
-        if (bayar.getText() != null && !bayar.getText().isEmpty()) {
+        if (bayar.getText() != null && !bayar.getText().isEmpty() && totalBelanja.getText() != null && !totalBelanja.getText().isEmpty()) {
             int a = Integer.parseInt(totalBelanja.getText());
             int b = Integer.parseInt(bayar.getText());
             if (b > a) {
@@ -655,8 +674,8 @@ public class Kasir extends javax.swing.JFrame {
             cn.createStatement().executeUpdate("DELETE FROM transaksi WHERE id='" + id_transaksi.getText() + "'");
             tampilkan2();
             totalBelanja();
-            bayar.setText("");
-            kembalian.setText("");
+            bayar.setText(null);
+            kembalian.setText(null);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
@@ -793,7 +812,6 @@ public class Kasir extends javax.swing.JFrame {
     private javax.swing.JTextField totalBelanja;
     // End of variables declaration//GEN-END:variables
 
-    // CUSTOM METHOD BISA DIEEDIT
     private void tampilkan() {
         int row = tabelBarang.getRowCount();
         for (int a = 0; a < row; a++) {
@@ -801,16 +819,16 @@ public class Kasir extends javax.swing.JFrame {
         }
         try {
             Connection cn = ConnectDb.getConnection();
-            ResultSet rs = cn.createStatement().executeQuery("SELECT * FROM barang");
+            ResultSet rs = cn.createStatement().executeQuery("SELECT ROW_NUMBER() OVER (ORDER BY id) AS row_num, * FROM barang");
             while (rs.next()) {
-                String data[] = {rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6)};
+                String data[] = {rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)};
                 model.addRow(data);
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
     }
-    
+
     private void tampilkan2() {
         int row = tabelKasir.getRowCount();
         for (int a = 0; a < row; a++) {
@@ -821,8 +839,7 @@ public class Kasir extends javax.swing.JFrame {
             ResultSet kodeTr = cn.createStatement().executeQuery("SELECT count FROM counter ORDER BY id DESC LIMIT 1");
             if (kodeTr.next()) {
                 int counter = Integer.parseInt(kodeTr.getString(1));
-                //workaround
-                ResultSet rs = cn.createStatement().executeQuery("SELECT ROW_NUMBER() OVER ( ORDER BY transaksi.id ) row_num, transaksi.kode_transaksi, transaksi.id, transaksi.kode_barang, barang.nama_barang, transaksi.jumlah_barang, transaksi.harga_barang, barang.satuan_barang, transaksi.total FROM transaksi LEFT JOIN barang ON transaksi.kode_barang = barang.kode_barang  WHERE kode_transaksi='" + counter + "'");
+                ResultSet rs = cn.createStatement().executeQuery("SELECT ROW_NUMBER() OVER (ORDER BY transaksi.id) AS row_num, transaksi.kode_transaksi, transaksi.id, transaksi.kode_barang, barang.nama_barang, transaksi.jumlah_barang, transaksi.harga_barang, barang.satuan_barang, transaksi.total FROM transaksi LEFT JOIN barang ON transaksi.kode_barang = barang.kode_barang  WHERE kode_transaksi='" + counter + "'");
                 while (rs.next()) {
                     String data[] = {rs.getString(1), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getString(9)};
                     model2.addRow(data);
@@ -832,7 +849,7 @@ public class Kasir extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
     }
-    
+
     private void reset() {
         id_barang.setText(null);
         kode_barang.setText(null);
@@ -841,7 +858,7 @@ public class Kasir extends javax.swing.JFrame {
         satuan_barang.setText("pcs");
         keterangan_barang.setText(null);
     }
-    
+
     private void reset2() {
         hargaBarang.setText(null);
         satuanBarang.setText(null);
@@ -849,17 +866,18 @@ public class Kasir extends javax.swing.JFrame {
         totalBarang.setText(null);
         comboBarang.setSelectedIndex(-1);
     }
-    
+
     private void reset3() {
         totalBelanja.setText(null);
         bayar.setText(null);
         kembalian.setText(null);
     }
-    
+
     private void fillCombo() {
         try {
             Connection cn = ConnectDb.getConnection();
-            ResultSet rs = cn.createStatement().executeQuery("SELECT CONCAT(kode_barang, \" | \", nama_barang) FROM barang");
+            comboBarang.removeAllItems();
+            ResultSet rs = cn.createStatement().executeQuery("SELECT kode_barang || ' | ' || nama_barang FROM barang");
             while (rs.next()) {
                 comboBarang.addItem(rs.getString(1));
             }
@@ -867,7 +885,7 @@ public class Kasir extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
     }
-    
+
     private void totalBelanja() {
         try {
             Connection cn = ConnectDb.getConnection();
@@ -879,7 +897,7 @@ public class Kasir extends javax.swing.JFrame {
                     int x = rs.getInt(1);
                     totalBelanja.setText(String.valueOf(x));
                     if (rs.wasNull()) {
-                        totalBelanja.setText("");
+                        totalBelanja.setText(null);
                     }
                 }
             }
