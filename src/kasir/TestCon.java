@@ -5,15 +5,11 @@
  */
 package kasir;
 
-/**
- *
- * @author wijayalvthfi
- */
-
 import java.sql.Connection;
 
 public class TestCon {
-    public static void main(String args[]){
+
+    public static void main(String args[]) {
         Connection con = ConnectDb.getConnection();
         if (con != null) {
             System.out.println("Koneksi berhasil!");

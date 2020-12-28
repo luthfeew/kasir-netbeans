@@ -17,10 +17,10 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class Kasir extends javax.swing.JFrame {
-
+    
     DefaultTableModel model;
     DefaultTableModel model2;
-
+    
     public Kasir() {
         initComponents();
         String[] judul = {"ID", "Kode", "Nama", "Harga", "Satuan", "Keterangan"};
@@ -810,7 +810,7 @@ public class Kasir extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
     }
-
+    
     private void tampilkan2() {
         int row = tabelKasir.getRowCount();
         for (int a = 0; a < row; a++) {
@@ -832,7 +832,7 @@ public class Kasir extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
     }
-
+    
     private void reset() {
         id_barang.setText(null);
         kode_barang.setText(null);
@@ -841,7 +841,7 @@ public class Kasir extends javax.swing.JFrame {
         satuan_barang.setText("pcs");
         keterangan_barang.setText(null);
     }
-
+    
     private void reset2() {
         hargaBarang.setText(null);
         satuanBarang.setText(null);
@@ -849,13 +849,13 @@ public class Kasir extends javax.swing.JFrame {
         totalBarang.setText(null);
         comboBarang.setSelectedIndex(-1);
     }
-
+    
     private void reset3() {
         totalBelanja.setText(null);
         bayar.setText(null);
         kembalian.setText(null);
     }
-
+    
     private void fillCombo() {
         try {
             Connection cn = ConnectDb.getConnection();
@@ -867,7 +867,7 @@ public class Kasir extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
     }
-
+    
     private void totalBelanja() {
         try {
             Connection cn = ConnectDb.getConnection();
