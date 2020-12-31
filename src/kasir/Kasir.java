@@ -11,37 +11,51 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import static javax.swing.JOptionPane.showMessageDialog;
+
 
 public class Kasir extends javax.swing.JFrame {
 
     DefaultTableModel model;
     DefaultTableModel model2;
+    DefaultTableModel model3;
 
     public Kasir() {
         initComponents();
         String[] judul = {"#", "ID", "Kode", "Nama", "Harga", "Satuan", "Keterangan"};
         String[] judul2 = {"#", "ID", "Kode", "Nama", "Jumlah", "Harga", "Satuan", "Total"};
+        String[] judul3 = {"#", "ID", "Kode", "Name", "Jumlah", "Harga", "Total", "Timestamp"};
+        
         model = new DefaultTableModel(judul, 0);
         tabelBarang.setModel(model);
         model2 = new DefaultTableModel(judul2, 0);
         tabelKasir.setModel(model2);
+        model3 = new DefaultTableModel(judul3, 0);
+        tabelLog.setModel(model3);
         //AWAL MASIH EXPERIMENTAL
         tabelBarang.getColumnModel().getColumn(0).setPreferredWidth(25);
         tabelBarang.getColumnModel().getColumn(0).setMaxWidth(1000);
         tabelKasir.getColumnModel().getColumn(0).setPreferredWidth(25);
         tabelKasir.getColumnModel().getColumn(0).setMaxWidth(1000);
+        tabelLog.getColumnModel().getColumn(0).setPreferredWidth(25);
+        tabelLog.getColumnModel().getColumn(0).setMaxWidth(1000);
+        
         tabelBarang.getColumnModel().getColumn(1).setMinWidth(0);
         tabelBarang.getColumnModel().getColumn(1).setMaxWidth(0);
         tabelKasir.getColumnModel().getColumn(1).setMinWidth(0);
         tabelKasir.getColumnModel().getColumn(1).setMaxWidth(0);
+        tabelLog.getColumnModel().getColumn(1).setMinWidth(0);
+        tabelLog.getColumnModel().getColumn(1).setMaxWidth(0);
         //AKHIR EXPERIMENTAL
         tabelBarang.setDefaultEditor(Object.class, null);
         tabelKasir.setDefaultEditor(Object.class, null);
+        tabelLog.setDefaultEditor(Object.class, null);
         id_barang.setVisible(false);
         id_transaksi.setVisible(false);
         fillCombo();
         tampilkan();
         tampilkan2();
+        tampilkan3("","","");
         reset();
     }
 
@@ -98,7 +112,13 @@ public class Kasir extends javax.swing.JFrame {
         comboBarang = new javax.swing.JComboBox<>();
         id_transaksi = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tabelLog = new javax.swing.JTable();
+        searchLog = new javax.swing.JTextField();
+        date1Log = new com.toedter.calendar.JDateChooser();
+        date2Log = new com.toedter.calendar.JDateChooser();
         jLabel14 = new javax.swing.JLabel();
+        buttonSearchLog = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -226,7 +246,7 @@ public class Kasir extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(nama_barang, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -259,7 +279,7 @@ public class Kasir extends javax.swing.JFrame {
                     .addComponent(btnHapus)
                     .addComponent(btnReset))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Barang", jPanel1);
@@ -376,7 +396,7 @@ public class Kasir extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 599, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 563, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -459,28 +479,78 @@ public class Kasir extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
                     .addComponent(kembalian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Kasir", jPanel2);
 
-        jLabel14.setText("Masih kosong euy");
+        tabelLog.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Kode", "Name", "Jumlah", "Harga", "Total", "Timestamp"
+            }
+        ));
+        tabelLog.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelLogMouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(tabelLog);
+
+        searchLog.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchLogActionPerformed(evt);
+            }
+        });
+
+        date1Log.setDateFormatString("d-M-y");
+
+        date2Log.setDateFormatString("d-M-y");
+
+        jLabel14.setText("To");
+
+        buttonSearchLog.setText("Search");
+        buttonSearchLog.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSearchLogActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane4)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(178, 178, 178)
-                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(348, Short.MAX_VALUE))
+                .addComponent(searchLog, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(date1Log, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel14)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(date2Log, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonSearchLog)
+                .addContainerGap(63, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(130, 130, 130)
-                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(247, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(date1Log, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(date2Log, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(searchLog, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(buttonSearchLog))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Log", jPanel3);
@@ -722,6 +792,39 @@ public class Kasir extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_bayarKeyTyped
 
+    private void buttonSearchLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSearchLogActionPerformed
+        // TODO add your handling code here:
+        String logsearch = "";
+        String logdate1= "";
+        String logdate2 = "";
+        if(searchLog.getText() != null){
+            logsearch = " And (transaksi.kode_transaksi LIKE '%"+searchLog.getText()+"%' OR transaksi.kode_barang LIKE '%"+searchLog.getText()+"%' OR barang.nama_barang LIKE '%"+searchLog.getText()+"%' OR transaksi.jumlah_barang LIKE '%"+searchLog.getText()+"%' OR transaksi.harga_barang LIKE '%"+searchLog.getText()+"%' OR transaksi.total LIKE '%"+searchLog.getText()+"%')";
+        }
+        if(date1Log.getDate() != null){
+            java.sql.Date dt1 = new java.sql.Date(date1Log.getDate().getTime());
+//            showMessageDialog(null, dt1);
+            logdate1= " And timestamp >= '"+ dt1 +"' ";
+        }
+        if(date2Log.getDate() != null){
+            java.sql.Date dt2 = new java.sql.Date(date2Log.getDate().getTime());
+//            showMessageDialog(null, dt2);
+            logdate2 = " And timestamp <= '"+ dt2 +"' ";
+        }
+        tampilkan3(logsearch, logdate1, logdate2);      
+        
+    }//GEN-LAST:event_buttonSearchLogActionPerformed
+
+    private void searchLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchLogActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchLogActionPerformed
+
+    private void tabelLogMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelLogMouseClicked
+        int i = tabelLog.getSelectedRow();
+        if (i > -1) {
+            id_transaksi.setText(model3.getValueAt(i, 1).toString());
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_tabelLogMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -766,7 +869,10 @@ public class Kasir extends javax.swing.JFrame {
     private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnTambah;
+    private javax.swing.JButton buttonSearchLog;
     private javax.swing.JComboBox<String> comboBarang;
+    private com.toedter.calendar.JDateChooser date1Log;
+    private com.toedter.calendar.JDateChooser date2Log;
     private javax.swing.JButton hapusTransaksi;
     private javax.swing.JTextField hargaBarang;
     private javax.swing.JTextField harga_barang;
@@ -792,6 +898,7 @@ public class Kasir extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jumlahBarang;
     private javax.swing.JTextField kembalian;
@@ -800,9 +907,11 @@ public class Kasir extends javax.swing.JFrame {
     private javax.swing.JTextField nama_barang;
     private javax.swing.JTextField satuanBarang;
     private javax.swing.JTextField satuan_barang;
+    private javax.swing.JTextField searchLog;
     private javax.swing.JButton simpanTransaksi;
     private javax.swing.JTable tabelBarang;
     private javax.swing.JTable tabelKasir;
+    private javax.swing.JTable tabelLog;
     private javax.swing.JButton tambahTransaksi;
     private javax.swing.JTextField totalBarang;
     private javax.swing.JTextField totalBelanja;
@@ -841,6 +950,24 @@ public class Kasir extends javax.swing.JFrame {
                     model2.addRow(data);
                 }
             }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex);
+        }
+    }
+    private void tampilkan3(String z, String x1, String x2) {
+        int row = tabelLog.getRowCount();
+        for (int a = 0; a < row; a++) {
+            model3.removeRow(0);
+        }
+        try {
+            Connection cn = ConnectDb.getConnection();                           
+                ResultSet rs = cn.createStatement().executeQuery("SELECT ROW_NUMBER() OVER (ORDER BY transaksi.id) AS row_num, transaksi.kode_transaksi, transaksi.id, transaksi.kode_barang, barang.nama_barang, transaksi.jumlah_barang, transaksi.harga_barang, barang.satuan_barang, transaksi.total, transaksi.timestamp, strftime('%d-%m-%Y %H:%M', timestamp) as created_at FROM transaksi LEFT JOIN barang ON transaksi.kode_barang = barang.kode_barang where transaksi.id is not null "+ z +" "+x1 +" "+ x2);
+
+                while (rs.next()) {
+                    String data[] = {rs.getString(1), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(9),rs.getString(11)};
+                    model3.addRow(data);
+                }
+            
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
