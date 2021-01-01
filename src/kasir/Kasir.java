@@ -870,11 +870,11 @@ public class Kasir extends javax.swing.JFrame {
         }
         if (date1Log.getDate() != null) {
             java.sql.Date dt1 = new java.sql.Date(date1Log.getDate().getTime());
-            logdate1 = " AND timestamp >= '" + dt1 + "' ";
+            logdate1 = " AND timestamp >= '" + dt1 + " 00:00'";
         }
         if (date2Log.getDate() != null) {
             java.sql.Date dt2 = new java.sql.Date(date2Log.getDate().getTime());
-            logdate2 = " AND timestamp <= '" + dt2 + "' ";
+            logdate2 = " AND timestamp <= '" + dt2 + " 23:59'";
         }
         tampilkan3(logsearch, logdate1, logdate2);
         totalLog(logsearch, logdate1, logdate2);
@@ -1100,7 +1100,7 @@ public class Kasir extends javax.swing.JFrame {
     private void totalLog(String z, String x1, String x2) {
         try {
             Connection cn = ConnectDb.getConnection();
-            ResultSet rs = cn.createStatement().executeQuery("SELECT SUM(total) FROM transaksi WHERE id IS NOt NULL " + z + " " + x1 + " " + x2);
+            ResultSet rs = cn.createStatement().executeQuery("SELECT SUM(total) FROM transaksi WHERE id IS NOT NULL " + z + " " + x1 + " " + x2);
             while (rs.next()) {
                 totalLog.setText(rs.getString(1));
             }
