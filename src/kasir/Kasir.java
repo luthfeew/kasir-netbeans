@@ -31,7 +31,6 @@ public class Kasir extends javax.swing.JFrame {
         model3 = new DefaultTableModel(judul3, 0);
         tabelLog.setModel(model3);
 
-        //AWAL MASIH EXPERIMENTAL
         tabelBarang.getColumnModel().getColumn(0).setPreferredWidth(25);
         tabelBarang.getColumnModel().getColumn(0).setMaxWidth(1000);
         tabelKasir.getColumnModel().getColumn(0).setPreferredWidth(25);
@@ -44,7 +43,6 @@ public class Kasir extends javax.swing.JFrame {
         tabelKasir.getColumnModel().getColumn(1).setMaxWidth(0);
         tabelLog.getColumnModel().getColumn(1).setMinWidth(0);
         tabelLog.getColumnModel().getColumn(1).setMaxWidth(0);
-        //AKHIR EXPERIMENTAL
 
         tabelBarang.setDefaultEditor(Object.class, null);
         tabelKasir.setDefaultEditor(Object.class, null);
@@ -776,6 +774,7 @@ public class Kasir extends javax.swing.JFrame {
                         tampilkan2();
                         reset3();
                         tampilkan3("", "", "");
+                        totalLog("", "", "");
                         JOptionPane.showMessageDialog(null, "Transaksi berhasil disimpan");
                     } else {
                         JOptionPane.showMessageDialog(null, "Jumlah bayar kurang");
@@ -867,15 +866,15 @@ public class Kasir extends javax.swing.JFrame {
         String logdate1 = "";
         String logdate2 = "";
         if (searchLog.getText() != null) {
-            logsearch = " And (transaksi.kode_transaksi LIKE '%" + searchLog.getText() + "%' OR transaksi.kode_barang LIKE '%" + searchLog.getText() + "%' OR transaksi.nama_barang LIKE '%" + searchLog.getText() + "%' OR transaksi.jumlah_barang LIKE '%" + searchLog.getText() + "%' OR transaksi.harga_barang LIKE '%" + searchLog.getText() + "%' OR transaksi.total LIKE '%" + searchLog.getText() + "%')";
+            logsearch = " AND (kode_transaksi LIKE '%" + searchLog.getText() + "%' OR kode_barang LIKE '%" + searchLog.getText() + "%' OR nama_barang LIKE '%" + searchLog.getText() + "%' OR jumlah_barang LIKE '%" + searchLog.getText() + "%' OR harga_barang LIKE '%" + searchLog.getText() + "%' OR total LIKE '%" + searchLog.getText() + "%')";
         }
         if (date1Log.getDate() != null) {
             java.sql.Date dt1 = new java.sql.Date(date1Log.getDate().getTime());
-            logdate1 = " And timestamp >= '" + dt1 + "' ";
+            logdate1 = " AND timestamp >= '" + dt1 + "' ";
         }
         if (date2Log.getDate() != null) {
             java.sql.Date dt2 = new java.sql.Date(date2Log.getDate().getTime());
-            logdate2 = " And timestamp <= '" + dt2 + "' ";
+            logdate2 = " AND timestamp <= '" + dt2 + "' ";
         }
         tampilkan3(logsearch, logdate1, logdate2);
         totalLog(logsearch, logdate1, logdate2);
@@ -1032,7 +1031,7 @@ public class Kasir extends javax.swing.JFrame {
         }
         try {
             Connection cn = ConnectDb.getConnection();
-            ResultSet rs = cn.createStatement().executeQuery("SELECT ROW_NUMBER() OVER (ORDER BY transaksi.id) AS row_num, transaksi.kode_transaksi, transaksi.id, transaksi.kode_barang, transaksi.nama_barang, transaksi.jumlah_barang, transaksi.harga_barang, transaksi.satuan_barang, transaksi.total, transaksi.timestamp, strftime('%d-%m-%Y %H:%M', timestamp) as created_at FROM transaksi where transaksi.id is not null " + z + " " + x1 + " " + x2);
+            ResultSet rs = cn.createStatement().executeQuery("SELECT ROW_NUMBER() OVER (ORDER BY id) AS row_num, kode_transaksi, id, kode_barang, nama_barang, jumlah_barang, harga_barang, satuan_barang, total, timestamp, strftime('%d-%m-%Y %H:%M', timestamp) AS created_at FROM transaksi WHERE id IS NOT NULL " + z + " " + x1 + " " + x2);
             while (rs.next()) {
                 String data[] = {rs.getString(1), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(9), rs.getString(11)};
                 model3.addRow(data);
@@ -1048,7 +1047,7 @@ public class Kasir extends javax.swing.JFrame {
         nama_barang.setText(null);
         harga_barang.setText(null);
         satuan_barang.setText("pcs");
-        keterangan_barang.setText(null);
+        keterangan_barang.setText("-");
     }
 
     private void reset2() {
@@ -1101,7 +1100,7 @@ public class Kasir extends javax.swing.JFrame {
     private void totalLog(String z, String x1, String x2) {
         try {
             Connection cn = ConnectDb.getConnection();
-            ResultSet rs = cn.createStatement().executeQuery("SELECT SUM(total) FROM transaksi LEFT JOIN barang ON transaksi.kode_barang = barang.kode_barang where transaksi.id is not null " + z + " " + x1 + " " + x2);
+            ResultSet rs = cn.createStatement().executeQuery("SELECT SUM(total) FROM transaksi WHERE id IS NOt NULL " + z + " " + x1 + " " + x2);
             while (rs.next()) {
                 totalLog.setText(rs.getString(1));
             }
