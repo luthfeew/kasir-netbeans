@@ -867,7 +867,7 @@ public class Kasir extends javax.swing.JFrame {
         String logdate1 = "";
         String logdate2 = "";
         if (searchLog.getText() != null) {
-            logsearch = " And (transaksi.kode_transaksi LIKE '%" + searchLog.getText() + "%' OR transaksi.kode_barang LIKE '%" + searchLog.getText() + "%' OR barang.nama_barang LIKE '%" + searchLog.getText() + "%' OR transaksi.jumlah_barang LIKE '%" + searchLog.getText() + "%' OR transaksi.harga_barang LIKE '%" + searchLog.getText() + "%' OR transaksi.total LIKE '%" + searchLog.getText() + "%')";
+            logsearch = " And (transaksi.kode_transaksi LIKE '%" + searchLog.getText() + "%' OR transaksi.kode_barang LIKE '%" + searchLog.getText() + "%' OR transaksi.nama_barang LIKE '%" + searchLog.getText() + "%' OR transaksi.jumlah_barang LIKE '%" + searchLog.getText() + "%' OR transaksi.harga_barang LIKE '%" + searchLog.getText() + "%' OR transaksi.total LIKE '%" + searchLog.getText() + "%')";
         }
         if (date1Log.getDate() != null) {
             java.sql.Date dt1 = new java.sql.Date(date1Log.getDate().getTime());
@@ -1032,7 +1032,7 @@ public class Kasir extends javax.swing.JFrame {
         }
         try {
             Connection cn = ConnectDb.getConnection();
-            ResultSet rs = cn.createStatement().executeQuery("SELECT ROW_NUMBER() OVER (ORDER BY transaksi.id) AS row_num, transaksi.kode_transaksi, transaksi.id, transaksi.kode_barang, barang.nama_barang, transaksi.jumlah_barang, transaksi.harga_barang, barang.satuan_barang, transaksi.total, transaksi.timestamp, strftime('%d-%m-%Y %H:%M', timestamp) as created_at FROM transaksi LEFT JOIN barang ON transaksi.kode_barang = barang.kode_barang where transaksi.id is not null " + z + " " + x1 + " " + x2);
+            ResultSet rs = cn.createStatement().executeQuery("SELECT ROW_NUMBER() OVER (ORDER BY transaksi.id) AS row_num, transaksi.kode_transaksi, transaksi.id, transaksi.kode_barang, transaksi.nama_barang, transaksi.jumlah_barang, transaksi.harga_barang, transaksi.satuan_barang, transaksi.total, transaksi.timestamp, strftime('%d-%m-%Y %H:%M', timestamp) as created_at FROM transaksi where transaksi.id is not null " + z + " " + x1 + " " + x2);
             while (rs.next()) {
                 String data[] = {rs.getString(1), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(9), rs.getString(11)};
                 model3.addRow(data);
