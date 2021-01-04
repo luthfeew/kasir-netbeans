@@ -20,6 +20,8 @@ public class Kasir extends javax.swing.JFrame {
     
     public Kasir() {
         initComponents();
+        this.setTitle("Kasir APP ~ Kelompok 6");
+        
         String[] judul = {"#", "ID", "Kode", "Nama", "Harga", "Satuan", "Keterangan"};
         String[] judul2 = {"#", "ID", "Kode", "Nama", "Jumlah", "Harga", "Satuan", "Total"};
         String[] judul3 = {"#", "ID", "Kode", "Name", "Jumlah", "Harga", "Total", "Timestamp"};
@@ -593,7 +595,7 @@ public class Kasir extends javax.swing.JFrame {
                 .addComponent(jLabel17)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(searchLog, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
+                    .addComponent(searchLog)
                     .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
