@@ -13,24 +13,24 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class Kasir extends javax.swing.JFrame {
-
+    
     DefaultTableModel model;
     DefaultTableModel model2;
     DefaultTableModel model3;
-
+    
     public Kasir() {
         initComponents();
         String[] judul = {"#", "ID", "Kode", "Nama", "Harga", "Satuan", "Keterangan"};
         String[] judul2 = {"#", "ID", "Kode", "Nama", "Jumlah", "Harga", "Satuan", "Total"};
         String[] judul3 = {"#", "ID", "Kode", "Name", "Jumlah", "Harga", "Total", "Timestamp"};
-
+        
         model = new DefaultTableModel(judul, 0);
         tabelBarang.setModel(model);
         model2 = new DefaultTableModel(judul2, 0);
         tabelKasir.setModel(model2);
         model3 = new DefaultTableModel(judul3, 0);
         tabelLog.setModel(model3);
-
+        
         tabelBarang.getColumnModel().getColumn(0).setPreferredWidth(25);
         tabelBarang.getColumnModel().getColumn(0).setMaxWidth(1000);
         tabelKasir.getColumnModel().getColumn(0).setPreferredWidth(25);
@@ -43,7 +43,7 @@ public class Kasir extends javax.swing.JFrame {
         tabelKasir.getColumnModel().getColumn(1).setMaxWidth(0);
         tabelLog.getColumnModel().getColumn(1).setMinWidth(0);
         tabelLog.getColumnModel().getColumn(1).setMaxWidth(0);
-
+        
         tabelBarang.setDefaultEditor(Object.class, null);
         tabelKasir.setDefaultEditor(Object.class, null);
         tabelLog.setDefaultEditor(Object.class, null);
@@ -125,7 +125,6 @@ public class Kasir extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         totalLog = new javax.swing.JTextField();
-        jLabel21 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -288,7 +287,7 @@ public class Kasir extends javax.swing.JFrame {
                     .addComponent(btnHapus)
                     .addComponent(btnReset))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -378,7 +377,7 @@ public class Kasir extends javax.swing.JFrame {
 
         kembalian.setEditable(false);
 
-        simpanTransaksi.setText("Simpan");
+        simpanTransaksi.setText("Simpan Log");
         simpanTransaksi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 simpanTransaksiActionPerformed(evt);
@@ -594,7 +593,7 @@ public class Kasir extends javax.swing.JFrame {
                 .addComponent(jLabel17)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(searchLog)
+                    .addComponent(searchLog, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
                     .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -606,7 +605,7 @@ public class Kasir extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(buttonSearchLog)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel20)
@@ -614,28 +613,17 @@ public class Kasir extends javax.swing.JFrame {
                 .addGap(20, 20, 20))
         );
 
-        jTabbedPane1.addTab("Rekap", jPanel3);
-
-        jLabel21.setFont(new java.awt.Font("Bebas Neue", 1, 20)); // NOI18N
-        jLabel21.setText("Aplikasi Kasir");
+        jTabbedPane1.addTab("Log", jPanel3);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jTabbedPane1)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(244, 244, 244)
-                .addComponent(jLabel21)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addComponent(jLabel21)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1))
+            .addComponent(jTabbedPane1)
         );
 
         pack();
@@ -644,16 +632,23 @@ public class Kasir extends javax.swing.JFrame {
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
         try {
             Connection cn = ConnectDb.getConnection();
-            if (kode_barang.getText() != null && !kode_barang.getText().isEmpty()) {
-                ResultSet rs = cn.createStatement().executeQuery("SELECT kode_barang FROM barang WHERE kode_barang='" + kode_barang.getText() + "'");
-                if (!rs.next()) {
-                    cn.createStatement().executeUpdate("INSERT INTO barang(kode_barang,nama_barang,harga_barang,satuan_barang,keterangan_barang) VALUES" + "('" + kode_barang.getText() + "','" + nama_barang.getText() + "','" + harga_barang.getText() + "','" + satuan_barang.getText() + "','" + keterangan_barang.getText() + "')");
-                    tampilkan();
-                    reset();
-                    fillCombo();
+            if (kode_barang.getText() != null && !kode_barang.getText().isEmpty() && nama_barang.getText() != null && !nama_barang.getText().isEmpty() && harga_barang.getText() != null && !harga_barang.getText().isEmpty() && satuan_barang.getText() != null && !satuan_barang.getText().isEmpty() && keterangan_barang.getText() != null && !keterangan_barang.getText().isEmpty()) {
+                int a = Integer.parseInt(harga_barang.getText());
+                if (a > 0) {
+                    ResultSet rs = cn.createStatement().executeQuery("SELECT kode_barang FROM barang WHERE kode_barang='" + kode_barang.getText() + "'");
+                    if (!rs.next()) {
+                        cn.createStatement().executeUpdate("INSERT INTO barang(kode_barang,nama_barang,harga_barang,satuan_barang,keterangan_barang) VALUES" + "('" + kode_barang.getText() + "','" + nama_barang.getText() + "','" + harga_barang.getText() + "','" + satuan_barang.getText() + "','" + keterangan_barang.getText() + "')");
+                        tampilkan();
+                        reset();
+                        fillCombo();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error! Kode Barang sudah digunakan");
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Error! Kode Barang sudah digunakan");
+                    JOptionPane.showMessageDialog(null, "Harga barang tidak valid");
                 }
+            } else {
+                JOptionPane.showMessageDialog(null, "Data barang ada yang masih kosong");
             }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
@@ -663,10 +658,19 @@ public class Kasir extends javax.swing.JFrame {
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         try {
             Connection cn = ConnectDb.getConnection();
-            cn.createStatement().executeUpdate("UPDATE barang SET kode_barang='" + kode_barang.getText() + "',nama_barang='" + nama_barang.getText() + "',harga_barang='" + harga_barang.getText() + "',satuan_barang='" + satuan_barang.getText() + "',keterangan_barang='" + keterangan_barang.getText() + "' WHERE id='" + id_barang.getText() + "'");
-            tampilkan();
-            reset();
-            fillCombo();
+            if (kode_barang.getText() != null && !kode_barang.getText().isEmpty() && nama_barang.getText() != null && !nama_barang.getText().isEmpty() && harga_barang.getText() != null && !harga_barang.getText().isEmpty() && satuan_barang.getText() != null && !satuan_barang.getText().isEmpty() && keterangan_barang.getText() != null && !keterangan_barang.getText().isEmpty()) {
+                int a = Integer.parseInt(harga_barang.getText());
+                if (a > 0) {
+                    cn.createStatement().executeUpdate("UPDATE barang SET kode_barang='" + kode_barang.getText() + "',nama_barang='" + nama_barang.getText() + "',harga_barang='" + harga_barang.getText() + "',satuan_barang='" + satuan_barang.getText() + "',keterangan_barang='" + keterangan_barang.getText() + "' WHERE id='" + id_barang.getText() + "'");
+                    tampilkan();
+                    reset();
+                    fillCombo();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Harga barang tidak valid");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Data barang ada yang masih kosong");
+            }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
@@ -733,31 +737,36 @@ public class Kasir extends javax.swing.JFrame {
         try {
             String pil = (String) comboBarang.getSelectedItem();
             if (pil != null) {
-                String kodeBarang = pil.substring(0, pil.indexOf(" |"));
-                Connection cn = ConnectDb.getConnection();
-                int counter = 1;
-                ResultSet kodeTr = cn.createStatement().executeQuery("SELECT count FROM counter ORDER BY id DESC LIMIT 1");
-                while (kodeTr.next()) {
-                    counter = Integer.parseInt(kodeTr.getString(1));
-                }
-                ResultSet detailBarang = cn.createStatement().executeQuery("SELECT kode_barang, nama_barang, satuan_barang FROM barang WHERE kode_barang='" + kodeBarang + "'");
-                if (detailBarang.next()) {
-                    String a = detailBarang.getString(1);
-                    String b = detailBarang.getString(2);
-                    String c = detailBarang.getString(3);
-                    if (jumlahBarang.getText() != null && !jumlahBarang.getText().isEmpty()) {
-                        cn.createStatement().executeUpdate("INSERT INTO transaksi(kode_transaksi,kode_barang,nama_barang,satuan_barang,jumlah_barang,harga_barang,total) VALUES('" + counter + "','" + a + "','" + b + "','" + c + "','" + jumlahBarang.getText() + "','" + hargaBarang.getText() + "','" + totalBarang.getText() + "')");
-                        reset2();
-                        jumlahBarang.setEditable(false);
-                        ResultSet cekCounter = cn.createStatement().executeQuery("SELECT count FROM counter WHERE count='" + counter + "' LIMIT 1");
-                        if (!cekCounter.next()) {
-                            cn.createStatement().executeUpdate("INSERT INTO counter(count) VALUES('" + counter + "')");
-                        }
+                int x = Integer.parseInt(jumlahBarang.getText());
+                if (x > 0) {
+                    String kodeBarang = pil.substring(0, pil.indexOf(" |"));
+                    Connection cn = ConnectDb.getConnection();
+                    int counter = 1;
+                    ResultSet kodeTr = cn.createStatement().executeQuery("SELECT count FROM counter ORDER BY id DESC LIMIT 1");
+                    while (kodeTr.next()) {
+                        counter = Integer.parseInt(kodeTr.getString(1));
                     }
-                    tampilkan2();
-                    totalBelanja();
-                    bayar.setText(null);
-                    kembalian.setText(null);
+                    ResultSet detailBarang = cn.createStatement().executeQuery("SELECT kode_barang, nama_barang, satuan_barang FROM barang WHERE kode_barang='" + kodeBarang + "'");
+                    if (detailBarang.next()) {
+                        String a = detailBarang.getString(1);
+                        String b = detailBarang.getString(2);
+                        String c = detailBarang.getString(3);
+                        if (jumlahBarang.getText() != null && !jumlahBarang.getText().isEmpty()) {
+                            cn.createStatement().executeUpdate("INSERT INTO transaksi(kode_transaksi,kode_barang,nama_barang,satuan_barang,jumlah_barang,harga_barang,total) VALUES('" + counter + "','" + a + "','" + b + "','" + c + "','" + jumlahBarang.getText() + "','" + hargaBarang.getText() + "','" + totalBarang.getText() + "')");
+                            reset2();
+                            jumlahBarang.setEditable(false);
+                            ResultSet cekCounter = cn.createStatement().executeQuery("SELECT count FROM counter WHERE count='" + counter + "' LIMIT 1");
+                            if (!cekCounter.next()) {
+                                cn.createStatement().executeUpdate("INSERT INTO counter(count) VALUES('" + counter + "')");
+                            }
+                        }
+                        tampilkan2();
+                        totalBelanja();
+                        bayar.setText(null);
+                        kembalian.setText(null);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Jumlah barang tidak valid");
                 }
             }
         } catch (SQLException ex) {
@@ -773,7 +782,7 @@ public class Kasir extends javax.swing.JFrame {
                 if (bayar.getText() != null && !bayar.getText().isEmpty()) {
                     int a = Integer.parseInt(totalBelanja.getText());
                     int b = Integer.parseInt(bayar.getText());
-                    if (b > a) {
+                    if (b >= a) {
                         ResultSet kodeTr = cn.createStatement().executeQuery("SELECT count FROM counter ORDER BY id DESC LIMIT 1");
                         while (kodeTr.next()) {
                             counter = Integer.parseInt(kodeTr.getString(1));
@@ -790,7 +799,6 @@ public class Kasir extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(null, "Transaksi berhasil disimpan");
                     } else {
                         JOptionPane.showMessageDialog(null, "Jumlah bayar kurang");
-                        bayar.setText(null);
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Masukkan jumlah bayar terlebih dahulu");
@@ -807,10 +815,12 @@ public class Kasir extends javax.swing.JFrame {
         if (bayar.getText() != null && !bayar.getText().isEmpty() && totalBelanja.getText() != null && !totalBelanja.getText().isEmpty()) {
             int a = Integer.parseInt(totalBelanja.getText());
             int b = Integer.parseInt(bayar.getText());
-            if (b > a) {
+            if (b >= a) {
                 int c = b - a;
                 String hitung = String.valueOf(c);
                 kembalian.setText(hitung);
+            } else {
+                kembalian.setText(null);
             }
         }
     }//GEN-LAST:event_bayarKeyReleased
@@ -965,7 +975,6 @@ public class Kasir extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1015,7 +1024,7 @@ public class Kasir extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
     }
-
+    
     private void tampilkan2() {
         int row = tabelKasir.getRowCount();
         for (int a = 0; a < row; a++) {
@@ -1036,7 +1045,7 @@ public class Kasir extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
     }
-
+    
     private void tampilkan3(String z, String x1, String x2) {
         int row = tabelLog.getRowCount();
         for (int a = 0; a < row; a++) {
@@ -1053,7 +1062,7 @@ public class Kasir extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
     }
-
+    
     private void reset() {
         id_barang.setText(null);
         kode_barang.setText(null);
@@ -1062,7 +1071,7 @@ public class Kasir extends javax.swing.JFrame {
         satuan_barang.setText("pcs");
         keterangan_barang.setText("-");
     }
-
+    
     private void reset2() {
         hargaBarang.setText(null);
         satuanBarang.setText(null);
@@ -1070,13 +1079,13 @@ public class Kasir extends javax.swing.JFrame {
         totalBarang.setText(null);
         comboBarang.setSelectedIndex(-1);
     }
-
+    
     private void reset3() {
         totalBelanja.setText(null);
         bayar.setText(null);
         kembalian.setText(null);
     }
-
+    
     private void fillCombo() {
         try {
             Connection cn = ConnectDb.getConnection();
@@ -1089,7 +1098,7 @@ public class Kasir extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
     }
-
+    
     private void totalBelanja() {
         try {
             Connection cn = ConnectDb.getConnection();
@@ -1109,7 +1118,7 @@ public class Kasir extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
     }
-
+    
     private void totalLog(String z, String x1, String x2) {
         try {
             Connection cn = ConnectDb.getConnection();
